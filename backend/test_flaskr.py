@@ -39,8 +39,8 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTure(data['total_questions'])
-        self.assertTure(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
     
     def test_404_sent_requesting_beyond_valid_questions(self):
         """Test _____________ """
@@ -59,8 +59,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['deleted'], 1)
-        self.assertTure(data['total_questions'])
-        self.assertTure(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
         self.assertEqual(question, None)
 
     def test_422_if_questions_dose_not_exist(self):
@@ -73,17 +73,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'unprocessable')
 
     def test_create_question(self):
-        res = self.client().post('/questions', json=self.new_question)
+        res = self.client().post('/questions')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTure(data['created'])
-        self.assertTure(len(data['questions']))
+        self.assertTrue(data['created'])
+        self.assertTrue(len(data['questions']))
 
     def test_400_for_failed_create(self):
         """Test _____________ """
-        res = self.client().post('/questions/45', json=self.new_question)
+        res = self.client().post('/questions/45')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
