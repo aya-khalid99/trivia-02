@@ -53,7 +53,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_delete_question(self):
         res = self.client().delete('/questions/1')
-        data = json.laods(res.data)
+        data = json.loads(res.data)
         question = Question.query.filter(Question.id == 1).one_or_none()
 
         self.assertEqual(res.status_code, 200)
