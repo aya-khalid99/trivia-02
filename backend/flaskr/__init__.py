@@ -99,7 +99,7 @@ def create_app(test_config=None):
 
       return jsonify({
         'success': True,
-        'deleted': book_id,
+        'deleted': question_id,
         'questions': current_questions,
         'total_questions': len(Question.query.all())
       })
@@ -133,8 +133,8 @@ def create_app(test_config=None):
 
       return jsonify({
         'success': True,
-        'answer': answer,
-        'category': category,
+        'answer': new_answer,
+        'category': new_category,
         'questions': current_questions,
         'total_questions': len(Question.query.all())
       }) 
