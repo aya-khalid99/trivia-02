@@ -89,6 +89,83 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'bad request')
+        
+    def test_get_paginated_categories(self):
+        """Test _____________ """
+        res = self.client().get('/categories')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_categories'])
+        self.assertTrue(len(data['Categories']))
+    
+    def test_404_sent_requesting_beyond_valid_categories(self):
+        """Test _____________ """
+        res = self.client().get('/categories?page=1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_get_paginated_quiz(self):
+        """Test _____________ """
+        res = self.client().get('/quizzes')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['questions'])
+    
+    def test_404_sent_requesting_beyond_valid_quiz(self):
+        """Test _____________ """
+        res = self.client().get('/quizzes/7')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_get_paginated_category(self):
+        """Test _____________ """
+        res = self.client().get('/categories/<int:category_id>/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_questions'])
+        # self.assertTrue(data['current_category'])
+        self.assertTrue(len(data['questions']))
+
+    
+    def test_404_sent_requesting_beyond_valid_category(self):
+        """Test _____________ """
+        res = self.client().get('/categories/<int:category_id>/questions?pages=1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_get_question_search_with_results(self):
+        res = self.client().post('/questions', json={'search': 'Novel'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
+
+    def test_get_question_search_without_results(self):
+        res = self.client().post('/questions', json={'search': 'canbe'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_questions'], 0)
+        self.assertTrue(len(data['questions']), 0)
+
     
 
 # Make the tests conveniently executable
